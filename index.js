@@ -1,13 +1,15 @@
 var express = require("express");
 var socket = require("socket.io");
+const port = 4000 || process.env.PORT;
 
 //App setup
 var app = express();
-var server = app.listen(4000, function() {
-  console.log("listeneing to request on port 4000");
+
+var server = app.listen(port, function() {
+  console.log(`listeneing to request on port ${port}`);
 });
 
-//static files
+// //static files
 app.use(express.static("public"));
 
 //socket setup

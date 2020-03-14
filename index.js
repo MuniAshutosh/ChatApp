@@ -1,19 +1,21 @@
-var express = require("express");
-var socket = require("socket.io");
-const port = 4000 || process.env.PORT;
+const path = require('path');
+const express = require("express");
+const http = require('http');
+const socket = require("socket.io");
+const port = process.env.PORT || 4000;
+const publicPath = path.join(__dirname, '/public');
 
-//App setup
 var app = express();
+var server = http.createServer(app);
+var io = socket(server);
 
-var server = app.listen(port, function() {
-  console.log(`listeneing to request on port ${port}`);
-});
 
 // //static files
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(publicPath));
 
-//socket setup
-var io = socket(server);
+server.listen(port, () => {
+  console.log(`Server is up on ${port}`);
+});
 
 io.on("connection", function(socket) {
   console.log("made socket connection:", socket.id);
@@ -21,7 +23,7 @@ io.on("connection", function(socket) {
   socket.on("chat", function(data) {
     io.sockets.emit("chat", data);
   });
-""
+
   socket.on("typing", function(data) {
     socket.broadcast.emit("typing", data);
   });

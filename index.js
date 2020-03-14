@@ -10,7 +10,7 @@ var server = app.listen(port, function() {
 });
 
 // //static files
-app.use(express.static("public"));
+app.use(express.static(__dirname + '/public'));
 
 //socket setup
 var io = socket(server);
@@ -21,7 +21,7 @@ io.on("connection", function(socket) {
   socket.on("chat", function(data) {
     io.sockets.emit("chat", data);
   });
-
+""
   socket.on("typing", function(data) {
     socket.broadcast.emit("typing", data);
   });
